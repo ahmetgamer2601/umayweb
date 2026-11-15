@@ -83,6 +83,8 @@
         { name: '1.14', js: CDN + '1.14.1/dist/ort.min.js', base: CDN + '1.14.1/dist/' }
       ];
       const errs = [];
+      // iOS/Safari: paylaşımlı bellek isteyen yeni sürümler "Out of memory" verir; eski, tek iş parçacıklı sürümle başla.
+      if (/iP(hone|ad|od)|Macintosh.*Safari(?!.*Chrome)/.test(navigator.userAgent) && 'ontouchend' in document) VARIANTS.reverse();
       for (const v of VARIANTS) {
         try {
           setStatus('Model yükleniyor… (' + v.name + ')');
