@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0b1020">
+<meta name="color-scheme" content="dark">
+<title>UMAY</title>
+<link rel="icon" href="logo.webp">
+<style>
+:root{--bg:#0b1020;--panel:#141b30;--line:#242d49;--fg:#eef1fa;--mute:#9aa4c2;--acc:#6f7bff;--acc2:#3fd0b4;--warn:#ffb454;--bad:#ff6b6b}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+html,body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.5 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;-webkit-text-size-adjust:100%}
+body{padding:max(12px,env(safe-area-inset-top)) max(16px,env(safe-area-inset-right)) max(20px,env(safe-area-inset-bottom)) max(16px,env(safe-area-inset-left));min-height:100vh;min-height:100dvh}
+.wrap{max-width:560px;margin:0 auto;display:flex;flex-direction:column;gap:14px}
+header{display:flex;align-items:center;gap:12px;padding:4px 0}
+header img{width:44px;height:44px;object-fit:contain}
+header b{font-size:20px;letter-spacing:.14em}
+header span{display:block;font-size:12px;color:var(--mute);letter-spacing:.02em}
+.view{position:relative;border-radius:18px;overflow:hidden;background:#000;aspect-ratio:3/4;border:1px solid var(--line)}
+.view video,.view canvas{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.view .idle{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;text-align:center;padding:24px;color:var(--mute)}
+.view .idle img{width:84px;height:84px;opacity:.9}
+.say{min-height:3.2em;padding:14px 16px;border-radius:14px;background:var(--panel);border:1px solid var(--line);font-size:20px;font-weight:600;line-height:1.3;display:flex;align-items:center}
+.say.alert{border-color:var(--warn);color:var(--warn)}
+.status{font-size:13px;color:var(--mute);min-height:1.4em}
+.status.err{color:var(--bad)}
+.row{display:flex;gap:10px}
+button{font:inherit;color:inherit;border:0;border-radius:14px;padding:16px 18px;font-weight:700;font-size:18px;cursor:pointer;min-height:56px;-webkit-tap-highlight-color:transparent}
+button:focus-visible,summary:focus-visible,input:focus-visible{outline:3px solid #fff;outline-offset:2px}
+.go{flex:1;background:linear-gradient(135deg,#5b6bff,#7a5cff);color:#fff}
+.go.stop{background:#3a2230;color:#ffb3b3}
+.sec{background:var(--panel);border:1px solid var(--line);color:var(--fg);font-size:15px;font-weight:600;padding:12px 14px;min-height:48px;flex:1}
+.sec:disabled{opacity:.45}
+details{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:0 16px}
+summary{cursor:pointer;padding:14px 0;font-weight:600;list-style:none;display:flex;justify-content:space-between}
+summary::after{content:"+";color:var(--mute)}
+details[open] summary::after{content:"−"}
+.set{padding:0 0 14px;display:flex;flex-direction:column;gap:14px}
+label.f{display:flex;flex-direction:column;gap:6px;font-size:14px}
+label.f .t{display:flex;justify-content:space-between;color:var(--mute)}
+label.f .t b{color:var(--fg);font-weight:600}
+input[type=range]{width:100%;accent-color:var(--acc);height:32px}
+label.chk{display:flex;gap:10px;align-items:center;font-size:15px;min-height:36px}
+label.chk input{width:22px;height:22px;accent-color:var(--acc)}
+.stats{display:flex;gap:14px;font-size:12px;color:var(--mute);flex-wrap:wrap}
+.note{font-size:12.5px;color:var(--mute);line-height:1.5}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <img src="logo.webp" alt="UMAY logosu" width="44" height="44">
+    <div><b>UMAY</b><span>Uyarlanabilir Mekansal Algı ve Yönlendirme</span></div>
+  </header>
+
+  <div class="view" id="view">
+    <video id="video" playsinline muted autoplay></video>
+    <canvas id="overlay"></canvas>
+    <div class="idle" id="idle">
+      <img src="logo.webp" alt="">
+      <div>Kamerayı çevrenize doğrultun.<br>Başlat'a dokununca algılama ve sesli uyarı açılır.</div>
+    </div>
+  </div>
+
+  <div class="say" id="say" aria-live="assertive">Hazır değil</div>
+  <div class="status" id="status" aria-live="polite"></div>
+
+  <div class="row">
+    <button class="go" id="go">Başlat</button>
+  </div>
+  <div class="row">
+    <button class="sec" id="snap" disabled>Fotoğraf kaydet</button>
+    <button class="sec" id="test">Ses testi</button>
+  </div>
+
+  <details>
+    <summary>Ayarlar</summary>
+    <div class="set">
+      <label class="f"><span class="t">Hassasiyet (düşük = daha çok algılar) <b id="v-thr"></b></span>
+        <input type="range" id="thr" min="0.25" max="0.75" step="0.05"></label>
+      <label class="f"><span class="t">Aynı uyarıyı tekrar etme süresi <b id="v-rep"></b></span>
+        <input type="range" id="rep" min="3" max="20" step="1"></label>
+      <label class="f"><span class="t">Konuşma hızı <b id="v-rate"></b></span>
+        <input type="range" id="rate" min="0.7" max="1.5" step="0.05"></label>
+      <label class="f"><span class="t">Saniyede en çok algılama <b id="v-fps"></b></span>
+        <input type="range" id="fps" min="1" max="10" step="1"></label>
+      <label class="chk"><input type="checkbox" id="boxes"> Kutuları ekranda göster</label>
+      <label class="chk"><input type="checkbox" id="speakOn"> Sesli uyarı açık</label>
+    </div>
+  </details>
+
+  <div class="stats"><span id="s-ms">–</span><span id="s-fps">–</span><span id="s-eng">–</span></div>
+  <p class="note">Bu bir ön denemedir; güvenlik amacıyla tek başına güvenilmemelidir. Ekran açık kalmalı. Görüntü cihazınızdan çıkmaz, her şey telefonda işlenir.</p>
+</div>
+
+<script src="core.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

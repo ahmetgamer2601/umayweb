@@ -1,0 +1,494 @@
+{
+ "model": "yolox_nano.onnx",
+ "input": 416,
+ "bgr": true,
+ "scale255": true,
+ "rawDecode": true,
+ "strides": [
+  8,
+  16,
+  32
+ ],
+ "classes": [
+  {
+   "en": "person",
+   "tr": "insan",
+   "say": true,
+   "w": 1.3
+  },
+  {
+   "en": "bicycle",
+   "tr": "bisiklet",
+   "say": true,
+   "w": 1.2
+  },
+  {
+   "en": "car",
+   "tr": "araba",
+   "say": true,
+   "w": 1.3
+  },
+  {
+   "en": "motorcycle",
+   "tr": "motosiklet",
+   "say": true,
+   "w": 1.2
+  },
+  {
+   "en": "airplane",
+   "tr": "airplane",
+   "say": false,
+   "w": 1
+  },
+  {
+   "en": "bus",
+   "tr": "otobüs",
+   "say": true,
+   "w": 1.3
+  },
+  {
+   "en": "train",
+   "tr": "tren",
+   "say": true,
+   "w": 1.2
+  },
+  {
+   "en": "truck",
+   "tr": "kamyon",
+   "say": true,
+   "w": 1.3
+  },
+  {
+   "en": "boat",
+   "tr": "boat",
+   "say": false,
+   "w": 1
+  },
+  {
+   "en": "traffic light",
+   "tr": "trafik ışığı",
+   "say": true,
+   "w": 1.0
+  },
+  {
+   "en": "fire hydrant",
+   "tr": "yangın musluğu",
+   "say": true,
+   "w": 1.0
+  },
+  {
+   "en": "stop sign",
+   "tr": "dur levhası",
+   "say": true,
+   "w": 1.0
+  },
+  {
+   "en": "parking meter",
+   "tr": "park sayacı",
+   "say": true,
+   "w": 1.0
+  },
+  {
+   "en": "bench",
+   "tr": "bank",
+   "say": true,
+   "w": 1.0
+  },
+  {
+   "en": "bird",
+   "tr": "bird",
+   "say": false,
+   "w": 1
+  },
+  {
+   "en": "cat",
+   "tr": "kedi",
+   "say": true,
+   "w": 0.8
+  },
+  {
+   "en": "dog",
+   "tr": "köpek",
+   "say": true,
+   "w": 1.2
+  },
+  {
+   "en": "horse",
+   "tr": "at",
+   "say": true,
+   "w": 1.0
+  },
+  {
+   "en": "sheep",
+   "tr": "koyun",
+   "say": true,
+   "w": 0.8
+  },
+  {
+   "en": "cow",
+   "tr": "inek",
+   "say": true,
+   "w": 1.0
+  },
+  {
+   "en": "elephant",
+   "tr": "elephant",
+   "say": false,
+   "w": 1
+  },
+  {
+   "en": "bear",
+   "tr": "bear",
+   "say": false,
+   "w": 1
+  },
+  {
+   "en": "zebra",
+   "tr": "zebra",
+   "say": false,
+   "w": 1
+  },
+  {
+   "en": "giraffe",
+   "tr": "giraffe",
+   "say": false,
+   "w": 1
+  },
+  {
+   "en": "backpack",
+   "tr": "çanta",
+   "say": true,
+   "w": 0.5
+  },
+  {
+   "en": "umbrella",
+   "tr": "şemsiye",
+   "say": true,
+   "w": 0.6
+  },
+  {
+   "en": "handbag",
+   "tr": "handbag",
+   "say": false,
+   "w": 1
+  },
+  {
+   "en": "tie",
+   "tr": "tie",
+   "say": false,
+   "w": 1
+  },
+  {
+   "en": "suitcase",
+   "tr": "bavul",
+   "say": true,
+   "w": 0.8
+  },
+  {
+   "en": "frisbee",
+   "tr": "frisbee",
+   "say": false,
+   "w": 1
+  },
+  {
+   "en": "skis",
+   "tr": "skis",
+   "say": false,
+   "w": 1
+  },
+  {
+   "en": "snowboard",
+   "tr": "snowboard",
+   "say": false,
+   "w": 1
+  },
+  {
+   "en": "sports ball",
+   "tr": "sports ball",
+   "say": false,
+   "w": 1
+  },
+  {
+   "en": "kite",
+   "tr": "kite",
+   "say": false,
+   "w": 1
+  },
+  {
+   "en": "baseball bat",
+   "tr": "baseball bat",
+   "say": false,
+   "w": 1
+  },
+  {
+   "en": "baseball glove",
+   "tr": "baseball glove",
+   "say": false,
+   "w": 1
+  },
+  {
+   "en": "skateboard",
+   "tr": "skateboard",
+   "say": false,
+   "w": 1
+  },
+  {
+   "en": "surfboard",
+   "tr": "surfboard",
+   "say": false,
+   "w": 1
+  },
+  {
+   "en": "tennis racket",
+   "tr": "tennis racket",
+   "say": false,
+   "w": 1
+  },
+  {
+   "en": "bottle",
+   "tr": "şişe",
+   "say": true,
+   "w": 0.3
+  },
+  {
+   "en": "wine glass",
+   "tr": "wine glass",
+   "say": false,
+   "w": 1
+  },
+  {
+   "en": "cup",
+   "tr": "cup",
+   "say": false,
+   "w": 1
+  },
+  {
+   "en": "fork",
+   "tr": "fork",
+   "say": false,
+   "w": 1
+  },
+  {
+   "en": "knife",
+   "tr": "knife",
+   "say": false,
+   "w": 1
+  },
+  {
+   "en": "spoon",
+   "tr": "spoon",
+   "say": false,
+   "w": 1
+  },
+  {
+   "en": "bowl",
+   "tr": "bowl",
+   "say": false,
+   "w": 1
+  },
+  {
+   "en": "banana",
+   "tr": "banana",
+   "say": false,
+   "w": 1
+  },
+  {
+   "en": "apple",
+   "tr": "apple",
+   "say": false,
+   "w": 1
+  },
+  {
+   "en": "sandwich",
+   "tr": "sandwich",
+   "say": false,
+   "w": 1
+  },
+  {
+   "en": "orange",
+   "tr": "orange",
+   "say": false,
+   "w": 1
+  },
+  {
+   "en": "broccoli",
+   "tr": "broccoli",
+   "say": false,
+   "w": 1
+  },
+  {
+   "en": "carrot",
+   "tr": "carrot",
+   "say": false,
+   "w": 1
+  },
+  {
+   "en": "hot dog",
+   "tr": "hot dog",
+   "say": false,
+   "w": 1
+  },
+  {
+   "en": "pizza",
+   "tr": "pizza",
+   "say": false,
+   "w": 1
+  },
+  {
+   "en": "donut",
+   "tr": "donut",
+   "say": false,
+   "w": 1
+  },
+  {
+   "en": "cake",
+   "tr": "cake",
+   "say": false,
+   "w": 1
+  },
+  {
+   "en": "chair",
+   "tr": "sandalye",
+   "say": true,
+   "w": 1.0
+  },
+  {
+   "en": "couch",
+   "tr": "koltuk",
+   "say": true,
+   "w": 1.0
+  },
+  {
+   "en": "potted plant",
+   "tr": "saksı",
+   "say": true,
+   "w": 0.9
+  },
+  {
+   "en": "bed",
+   "tr": "yatak",
+   "say": true,
+   "w": 0.7
+  },
+  {
+   "en": "dining table",
+   "tr": "masa",
+   "say": true,
+   "w": 1.0
+  },
+  {
+   "en": "toilet",
+   "tr": "tuvalet",
+   "say": true,
+   "w": 0.8
+  },
+  {
+   "en": "tv",
+   "tr": "tv",
+   "say": false,
+   "w": 1
+  },
+  {
+   "en": "laptop",
+   "tr": "laptop",
+   "say": false,
+   "w": 1
+  },
+  {
+   "en": "mouse",
+   "tr": "mouse",
+   "say": false,
+   "w": 1
+  },
+  {
+   "en": "remote",
+   "tr": "remote",
+   "say": false,
+   "w": 1
+  },
+  {
+   "en": "keyboard",
+   "tr": "keyboard",
+   "say": false,
+   "w": 1
+  },
+  {
+   "en": "cell phone",
+   "tr": "cell phone",
+   "say": false,
+   "w": 1
+  },
+  {
+   "en": "microwave",
+   "tr": "microwave",
+   "say": false,
+   "w": 1
+  },
+  {
+   "en": "oven",
+   "tr": "oven",
+   "say": false,
+   "w": 1
+  },
+  {
+   "en": "toaster",
+   "tr": "toaster",
+   "say": false,
+   "w": 1
+  },
+  {
+   "en": "sink",
+   "tr": "lavabo",
+   "say": true,
+   "w": 0.6
+  },
+  {
+   "en": "refrigerator",
+   "tr": "buzdolabı",
+   "say": true,
+   "w": 0.8
+  },
+  {
+   "en": "book",
+   "tr": "book",
+   "say": false,
+   "w": 1
+  },
+  {
+   "en": "clock",
+   "tr": "clock",
+   "say": false,
+   "w": 1
+  },
+  {
+   "en": "vase",
+   "tr": "vase",
+   "say": false,
+   "w": 1
+  },
+  {
+   "en": "scissors",
+   "tr": "scissors",
+   "say": false,
+   "w": 1
+  },
+  {
+   "en": "teddy bear",
+   "tr": "teddy bear",
+   "say": false,
+   "w": 1
+  },
+  {
+   "en": "hair drier",
+   "tr": "hair drier",
+   "say": false,
+   "w": 1
+  },
+  {
+   "en": "toothbrush",
+   "tr": "toothbrush",
+   "say": false,
+   "w": 1
+  }
+ ]
+}
