@@ -2,8 +2,6 @@
   'use strict';
   const C = window.UmayCore;
   const $ = id => document.getElementById(id);
-  const ORT_URLS = ['lib/ort.min.js', 'https://cdn.jsdelivr.net/npm/onnxruntime-web@1.20.1/dist/ort.min.js'];
-  const ORT_WASM_BASE = 'https://cdn.jsdelivr.net/npm/onnxruntime-web@1.20.1/dist/';
 
   const el = {
     video: $('video'), overlay: $('overlay'), idle: $('idle'), say: $('say'), status: $('status'),
@@ -73,20 +71,35 @@
   async function loadModel() {
     setStatus('Model yükleniyor…');
     cfg = await (await fetch('config.json', { cache: 'no-cache' })).json();
-    if (!window.ort) {
-      let ok = false;
-      for (const u of ORT_URLS) { try { await loadScript(u); ok = true; break; } catch (e) {} }
-      if (!ok || !window.ort) throw new Error('Yapay zekâ çalışma kütüphanesi (onnxruntime-web) yüklenemedi. İnternet bağlantısını kontrol edin.');
-    }
-    try { ort.env.wasm.wasmPaths = ORT_WASM_BASE; ort.env.wasm.numThreads = (self.crossOriginIsolated ? Math.min(4, navigator.hardwareConcurrency || 2) : 1); } catch (e) {}
     const buf = await (await fetch(cfg.model)).arrayBuffer();
-    session = await ort.InferenceSession.create(buf, { executionProviders: ['wasm'], graphOptimizationLevel: 'all' });
+    if (window.ort && window.ort.__preset) {            // yalnızca test için
+      session = await ort.InferenceSession.create(buf, {});
+    } else {
+      // Bazı telefonlar büyük wasm sürümlerinde "Out of memory" verir; sırayla daha hafif sürümleri dene.
+      const CDN = 'https://cdn.jsdelivr.net/npm/onnxruntime-web@';
+      const VARIANTS = [
+        { name: '1.20 (wasm)', js: CDN + '1.20.1/dist/ort.wasm.min.js', base: CDN + '1.20.1/dist/' },
+        { name: '1.16', js: CDN + '1.16.3/dist/ort.min.js', base: CDN + '1.16.3/dist/' },
+        { name: '1.14', js: CDN + '1.14.1/dist/ort.min.js', base: CDN + '1.14.1/dist/' }
+      ];
+      const errs = [];
+      for (const v of VARIANTS) {
+        try {
+          setStatus('Model yükleniyor… (' + v.name + ')');
+          window.ort = undefined; await loadScript(v.js);
+          if (!window.ort) throw new Error('kütüphane yüklenemedi');
+          ort.env.wasm.wasmPaths = v.base; ort.env.wasm.numThreads = 1; ort.env.wasm.proxy = false;
+          session = await ort.InferenceSession.create(buf, { executionProviders: ['wasm'], graphOptimizationLevel: 'all' });
+          el.sEng.textContent = 'ort ' + v.name; break;
+        } catch (e) { errs.push(v.name + ': ' + (e && e.message || e)); session = null; }
+      }
+      if (!session) throw new Error('Model çalıştırılamadı. ' + errs.join(' | '));
+    }
     inputName = session.inputNames ? session.inputNames[0] : 'images';
     outName = session.outputNames ? session.outputNames[0] : 'output';
     work.width = work.height = N();
     inBuf = new Float32Array(3 * N() * N());
     grids = C.makeGrids(N(), cfg.strides);
-    el.sEng.textContent = 'wasm';
   }
 
   function preprocess() {
